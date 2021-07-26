@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="595" pageHeight="648" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="549ee864-f009-4713-b6bb-8b5adaa63111">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="total_pembayaran" class="java.lang.String">
+		<defaultValueExpression><![CDATA["total_pembayaran"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     transaksi.`id_transaksi` AS id_transaksi,
+     transaksi.`id_barang` AS id_barang,
+     transaksi.`nama_barang` AS nama_barang,
+     transaksi.`harga_barang` AS harga_barang,
+     transaksi.`jml_barang` AS jml_barang,
+     transaksi.`total_harga` AS total_harga
+FROM
+     `transaksi` transaksi]]>
+	</queryString>
+	<field name="id_transaksi" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_barang" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nama_barang" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="harga_barang" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="jml_barang" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_harga" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="id_transaksi">
+		<groupExpression><![CDATA[$F{id_transaksi}]]></groupExpression>
+		<groupHeader>
+			<band height="37">
+				<frame>
+					<reportElement uuid="c262b178-ea16-41b2-9a07-e6c80acd8846" mode="Opaque" x="0" y="7" width="555" height="24" forecolor="#B89F7D" backcolor="#21AEB5"/>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="5"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="132" splitType="Stretch">
+			<frame>
+				<reportElement uuid="f4a1f1bc-c910-4a76-9d25-8b3623427c33" mode="Opaque" x="0" y="0" width="553" height="95" forecolor="#0D507A" backcolor="#0D507A"/>
+				<staticText>
+					<reportElement uuid="33580599-0c9d-4d5b-97a7-a89502e02e7f" style="Title" x="111" y="14" width="442" height="66"/>
+					<textElement>
+						<font fontName="Franklin Gothic Heavy" size="28" isBold="false"/>
+					</textElement>
+					<text><![CDATA[UNIT PRODUKSI MULTIMEDIA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="63cb5267-8bb6-4f49-90b3-d2820fa7fe1e" style="SubTitle" x="111" y="51" width="422" height="29"/>
+					<textElement>
+						<font fontName="Humanst521 Lt BT" size="22" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Thanks for putting trust on our store]]></text>
+				</staticText>
+				<image>
+					<reportElement uuid="1dd12f7a-baad-40a1-97ac-1bd9cb5bcd7c" x="21" y="14" width="77" height="66"/>
+					<imageExpression><![CDATA["C:\\Users\\Faa\\OneDrive\\Documents\\NetBeansProjects\\upMM\\src\\icon\\pngwing.jpg"]]></imageExpression>
+				</image>
+			</frame>
+			<frame>
+				<reportElement uuid="da6ad54d-9668-4c13-87db-2cc8b806c64b" mode="Opaque" x="0" y="100" width="553" height="32" forecolor="#000000" backcolor="#21AEB5"/>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement uuid="b13eb02a-e308-4cd4-b5ff-74f43c091a07" x="389" y="8" width="144" height="20" forecolor="#FFFFFF"/>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="72b487b0-b6cf-4662-8a14-0e5c3f3dc35d" style="SubTitle" isPrintRepeatedValues="false" x="21" y="4" width="158" height="24" forecolor="#FFFFFF"/>
+					<textElement>
+						<font size="16" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{id_transaksi}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d1171668-a7dd-4918-81b9-98bb3bfe8874" style="Column header" x="0" y="7" width="111" height="18" forecolor="#000000"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<text><![CDATA[id_barang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bd540771-b409-4637-bd5c-2c29b9b89b18" style="Column header" x="111" y="7" width="111" height="18" forecolor="#000000"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<text><![CDATA[nama_barang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="28b94ce0-cc2d-424e-82dd-f8e3d5a96df1" style="Column header" x="222" y="7" width="111" height="18" forecolor="#000000"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<text><![CDATA[harga_barang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="43ea032b-4bd9-43e8-8613-ede0c47077d7" style="Column header" x="333" y="7" width="111" height="18" forecolor="#000000"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<text><![CDATA[jml_barang]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ee86eb3d-1eef-4e4d-b0fc-cf07a690910c" style="Column header" x="444" y="7" width="111" height="18" forecolor="#000000"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<text><![CDATA[total_harga]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<frame>
+				<reportElement uuid="7eed4da0-9eac-47d4-ba4e-38f9d4ff6815" style="Row" mode="Opaque" x="0" y="0" width="555" height="18"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="2a3ab97e-b3ac-4807-ba4c-381536b2055d" style="Detail" positionType="Float" x="0" y="0" width="111" height="18"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{id_barang}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="66dfb8a5-b11f-4539-a5f4-01abaf4588e1" style="Detail" positionType="Float" x="91" y="0" width="141" height="18"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nama_barang}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="0ae51add-ab11-46fc-8fdf-fe571d1400c0" style="Detail" positionType="Float" x="235" y="0" width="144" height="18"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{harga_barang}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="adbf14b0-7d4d-4343-a764-c90dfd27967a" style="Detail" positionType="Float" x="340" y="0" width="136" height="18"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{jml_barang}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement uuid="379cb15a-d2b0-4157-a618-e53485a417df" style="Detail" positionType="Float" x="444" y="0" width="109" height="18"/>
+					<textElement>
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{total_harga}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement uuid="4087c77f-8f32-4771-89b0-71378a7c3255" positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement uuid="42f23809-5832-46df-bfd9-db67a5c8d84a" mode="Opaque" x="0" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#000000"/>
+				<textField>
+					<reportElement uuid="c982102e-73eb-4c9f-b1e8-0e9d07b93e22" x="379" y="4" width="165" height="20" forecolor="#FFFFFF"/>
+					<textElement>
+						<font fontName="Courier New" size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{total_pembayaran}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="339167c7-d4c3-4832-9afd-848e259a1dc9" x="197" y="4" width="157" height="20" forecolor="#21AEB5"/>
+					<textElement>
+						<font fontName="Courier New" size="13" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total Pembayaran =]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="3ec92959-ed08-4247-808a-294ea740e234" x="352" y="3" width="24" height="20" forecolor="#FFFFFF"/>
+					<textElement>
+						<font fontName="Courier New" size="13"/>
+					</textElement>
+					<text><![CDATA[RP.]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

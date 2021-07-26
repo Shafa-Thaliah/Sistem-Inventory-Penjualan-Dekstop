@@ -1,0 +1,442 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package view;
+
+import helper.config;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import helper.koneksi;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
+/**
+ *
+ * @author Faa
+ */
+public class dataTransaksi extends javax.swing.JFrame {
+public Connection con;
+public Statement sttm;
+public ResultSet rs;
+public DefaultTableModel model;
+    private String cari;
+
+    /**
+     * Creates new form DataTRansaksi
+     */
+    public dataTransaksi() {
+        initComponents();
+         koneksi.getKoneksi();
+         
+       Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+       
+        int x = d.width/2 - this.getSize().width/2;
+        int y = d.height/2 - this.getSize().height/2;
+        
+        this.setLocation(x, y);
+        
+        //Memberi Nama pada Tabel
+        String[] header = {"NISN","ID Transaksi","Jumlah Tagihan","Status"};
+        model = new DefaultTableModel(header,0);
+        tbbeli.setModel(model);
+        tampilData();
+  
+    
+    }
+    
+    public void tampilData (){
+       
+        koneksi koneksi = new koneksi();
+        int jumlahrow = tbbeli.getRowCount();
+        for (int n=0;n<jumlahrow;n++){
+            model.removeRow(0);
+        }
+          String cari = txt_search.getText();
+        try{
+            con = koneksi.getKoneksi();
+            sttm = con.createStatement();
+            rs = sttm.executeQuery("SELECT * FROM data_penjualan WHERE `NISN` LIKE '%"+cari+"%' OR `id_transaksi` LIKE '%"+cari+"%'");
+            while(rs.next()){
+                String[] row ={rs.getString(1),rs.getString(2),rs.getString(3), rs.getString(4)};
+                model.addRow(row);
+                
+            }
+            tbbeli.setModel(model);
+            }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+      
+    
+     private void cari (){
+        int row = tbbeli.getRowCount();
+        for(int a = 0 ; a < row ; a++){
+            model.removeRow(0);
+        }
+        
+        
+        String cari = txt_search.getText();
+        
+        String query = "SELECT * FROM `petugas_piket` WHERE `NISN`  LIKE '%"+cari+"%' OR `id_transaksi` LIKE '%"+cari+"%' ";
+                
+       try{
+           Connection con = koneksi.getKoneksi();//memanggil koneksi
+           Statement sttmnt = con.createStatement();//membuat statement
+           ResultSet rslt = sttmnt.executeQuery(query);//menjalanakn query
+           
+           while (rslt.next()){
+                //menampung data sementara
+                   
+                    String NISN = rslt.getString("NISN");
+                    String id = rslt.getString("id_transaksi");
+                    String tagihan = rslt.getString("tagihan");
+                    String status = rslt.getString("status_tagihan");
+                   
+                   
+                    
+                //masukan semua data kedalam array
+                String[] data = {NISN, id, tagihan, status};
+                //menambahakan baris sesuai dengan data yang tersimpan diarray
+                model.addRow(data);
+            }
+                //mengeset nilai yang ditampung agar muncul di table
+                tbbeli.setModel(model);
+           
+        
+    }catch(Exception e){
+           System.out.println(e);
+    }
+    
+    }
+
+    
+private void tambahData (){
+           
+        String NISN = txt_nisn.getText();
+        String id = txt_idtransaksi.getText();
+        String jumlah = txt_jmltagihan.getText();
+        String status =(String) jStatus.getSelectedItem();
+      
+         koneksi koneksi = new koneksi();
+        try{
+            con = koneksi.getKoneksi();
+            sttm = con.createStatement();
+            sttm.execute("INSERT INTO data_penjualan VALUES('"+NISN+"','"+id+"','"+jumlah+"','"+status+"')");
+            JOptionPane.showMessageDialog(null,"Data Berhasil Ditambahkan","Alert",JOptionPane.INFORMATION_MESSAGE);
+            
+        }catch (SQLException ex){
+            JOptionPane.showMessageDialog(null,"Data Gagal Ditambahkan","ERROR",JOptionPane.WARNING_MESSAGE);
+            System.out.println(ex.getMessage());
+            
+       }finally{
+            tampilData();
+            clear();
+            
+        }
+}
+          
+    private void clear(){
+        txt_nisn.setText(null);
+        txt_idtransaksi.setText(null);
+        txt_jmltagihan.setText(null);
+        jStatus.setSelectedItem(null);
+
+    }
+    
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel4 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tbbeli = new javax.swing.JTable();
+        close = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        txt_idtransaksi = new javax.swing.JTextField();
+        txt_nisn = new javax.swing.JTextField();
+        jStatus = new javax.swing.JComboBox<>();
+        txt_jmltagihan = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        txt_search = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button Add.png"))); // NOI18N
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
+        jLabel4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jLabel4KeyPressed(evt);
+            }
+        });
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 470, 100, 50));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/button update.png"))); // NOI18N
+        jLabel3.setEnabled(false);
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 470, 120, 50));
+
+        tbbeli.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tbbeli.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbbeliMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tbbeli);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, 650, 150));
+
+        close.setBackground(new java.awt.Color(186, 17, 48));
+        close.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                closeMouseClicked(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
+        jLabel6.setText("X");
+        close.add(jLabel6);
+
+        getContentPane().add(close, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 10, 30, 30));
+
+        txt_idtransaksi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_idtransaksiActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txt_idtransaksi, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 252, 200, -1));
+        getContentPane().add(txt_nisn, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, 200, -1));
+
+        jStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Belum Lunas", "Lunas" }));
+        jStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jStatusActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 250, 170, -1));
+
+        txt_jmltagihan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_jmltagihanActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txt_jmltagihan, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 220, 170, -1));
+
+        jLabel5.setText("Jumlah Tagihan");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 220, 90, 30));
+
+        jLabel7.setText("Status Tagihan");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 250, -1, 30));
+
+        jLabel8.setText("NISN");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, -1));
+
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/SEARCH.png"))); // NOI18N
+        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel10MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 30, 30));
+
+        txt_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_searchActionPerformed(evt);
+            }
+        });
+        txt_search.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_searchKeyReleased(evt);
+            }
+        });
+        getContentPane().add(txt_search, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 610, 30));
+
+        jLabel9.setText("ID Transaksi");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, -1, 30));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 670, 90));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/data transaksii.jpg"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 550));
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseClicked
+        // TODO add your handling code here:
+        menuAdmin start = new menuAdmin ();
+        start.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_closeMouseClicked
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+            // update data
+       try{
+            String sql ="INSERT data_penjualan set NISN ='"+txt_nisn.getText()
+                    +"' ,id_transaksi = '"+txt_idtransaksi.getText()
+                    +"' ,tagihan ='"+txt_jmltagihan.getText()
+                    +"' ,status_tagihan ='"+jStatus.getSelectedItem()
+                    +"' On Duplicate Key Update NISN = '"+txt_nisn.getText()+"' ,id_transaksi = '"+txt_idtransaksi.getText() +"' ,tagihan ='"+txt_jmltagihan.getText()+"' ,status_tagihan ='"+jStatus.getSelectedItem()
+                      
+                    +"'";
+            java.sql.Connection conn = (Connection)config.configDB();
+            java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+            pst.execute();
+            JOptionPane.showMessageDialog(null,"Data Berhasil Di Update");
+            
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null,"Data Gagal Di Update");
+             System.out.println(e.getMessage());
+        }
+        tampilData();
+  
+
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void txt_jmltagihanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_jmltagihanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_jmltagihanActionPerformed
+
+    private void txt_idtransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_idtransaksiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_idtransaksiActionPerformed
+
+    private void jStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jStatusActionPerformed
+
+    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
+        // tombol cari
+        cari();
+        tampilData();
+    }//GEN-LAST:event_jLabel10MouseClicked
+
+    private void txt_searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_searchKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_searchKeyReleased
+
+    private void txt_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_searchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_searchActionPerformed
+
+    private void jLabel4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel4KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel4KeyPressed
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        // TODO add your handling code here:
+        tambahData();
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void tbbeliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbbeliMouseClicked
+        // TODO add your handling code here:
+           int row = tbbeli.getSelectedRow();
+        jLabel3.setEnabled(true);
+
+        String nisn = tbbeli.getValueAt(row, 0).toString();
+        String id = tbbeli.getValueAt(row, 1).toString();
+        String jumlah = tbbeli.getValueAt(row, 2).toString();
+        String status = tbbeli.getValueAt(row, 3).toString();
+        
+        txt_nisn.setText(nisn);
+        txt_idtransaksi.setText(id);
+        txt_jmltagihan.setText(jumlah);
+        jStatus.setSelectedItem(status);
+    }//GEN-LAST:event_tbbeliMouseClicked
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(dataTransaksi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(dataTransaksi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(dataTransaksi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(dataTransaksi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new dataTransaksi().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel close;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JComboBox<String> jStatus;
+    private javax.swing.JTable tbbeli;
+    private javax.swing.JTextField txt_idtransaksi;
+    private javax.swing.JTextField txt_jmltagihan;
+    private javax.swing.JTextField txt_nisn;
+    private javax.swing.JTextField txt_search;
+    // End of variables declaration//GEN-END:variables
+}
